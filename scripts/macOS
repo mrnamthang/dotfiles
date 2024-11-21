@@ -14,9 +14,10 @@ sudo -v #Give sudo privileges ahead of time, so that we hopefully only have to e
 cd ~ #Moving to home directory at the beginning of the process
 
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" #Installing homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
 echo "<----------------Installing MacOS Apps, via Homebrew, Caks, & The App Store-------------------->"
 
 brew=(
@@ -34,13 +35,10 @@ brew=(
     openssl
     perl
     python
-    python@3.8
     sqlite
     tmux
     wget
     youtube-dl
-    zsh
-    oh-my-zsh
     zsh-autosuggestions
     zsh-syntax-highlighting
     starship
@@ -80,8 +78,15 @@ npm=(
 brew update
 brew upgrade
 
+# Install zsh
+echo 'Install oh-my-zsh'
+echo '-----------------'
+rm -rf $HOME/.oh-my-zsh
+curl -L https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+
+
 brew install ${brew[@]} #Homebrew App Installer
-brew cask install ${cask[@]} #Casks Installer
+brew install --cask ${cask[@]} #Casks Installer
 mas install ${mas[@]} #Mac App Store Installer
 npm install ${npm[@]} #Install npm apps
 
