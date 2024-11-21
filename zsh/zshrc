@@ -107,3 +107,4 @@ eval "$(starship init zsh)"
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 alias weather="curl wttr.in/Takaka"
+export PATH="$PATH:/opt/nvim-linux64/bin"
