@@ -10,3 +10,9 @@
 - Polybar tweaks: show screen birghtness
 - Issues: i3 flicking and tearing 
 - I3 tweaks: defaut workspace, 
+
+## macOs setup
+- ZSH
+
+
+

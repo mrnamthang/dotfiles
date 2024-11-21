@@ -14,12 +14,11 @@ sudo -v #Give sudo privileges ahead of time, so that we hopefully only have to e
 cd ~ #Moving to home directory at the beginning of the process
 
 
-
-
-
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" #Installing homebrew
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+echo "<----------------Installing MacOS Apps, via Homebrew, Caks, & The App Store-------------------->"
 
-#<----------------Installing MacOS Apps, via Homebrew, Caks, & The App Store-------------------->
 brew=(
     bash
     curl
@@ -32,7 +31,7 @@ brew=(
     neofetch
     neovim
     node
-    openssl@3
+    openssl
     perl
     python
     python@3.8
@@ -42,9 +41,15 @@ brew=(
     youtube-dl
     zsh
     oh-my-zsh
+    zsh-autosuggestions
+    zsh-syntax-highlighting
     starship
     docker
+    composer
+    mysql
+    yarn
 )
+
 cask=(
     alacritty
     balenaetcher
@@ -58,13 +63,16 @@ cask=(
     elmedia-player
     chatgpt
     phpstorm
+    git-credential-manager
 ) #GUI apps that install with cask
+
 mas=(
     409201541 #Pages 
     409203825 #Numbers 
     409183694 #Keynote 
     497799835 #Xcode 
 ) #Mac App Store apps I install
+
 npm=(
     spotify-cli-mac -g
 )
@@ -77,15 +85,61 @@ brew cask install ${cask[@]} #Casks Installer
 mas install ${mas[@]} #Mac App Store Installer
 npm install ${npm[@]} #Install npm apps
 
+echo "Install PHP and php packages"
+brew tap shivammathur/php
+brew install shivammathur/php/php@8.1
+brew install shivammathur/php/php@8.3
+brew link --overwrite --force php@8.3
+
+echo "installing sphp"
+curl -L https://raw.githubusercontent.com/rhukster/sphp.sh/main/sphp.sh > /opt/homebrew/bin/sphp
+chmod +x /opt/homebrew/bin/sphp
+
+echo 'Install imagick'
+echo '---------------'
+pecl install imagick
+
+echo 'Install memcached'
+echo '-----------------'
+pecl install memcached
+
+echo 'Install xdebug'
+echo '--------------'
+pecl install xdebug
+
+echo 'Install redis'
+echo '-------------'
+pecl install redis
+
+echo 'Install laravel valet'
+echo '---------------------'
+composer global require laravel/valet
+valet install
+
+
+
+echo "create symlink to pre-defined configs"
 cd ~
 mkdir projects
 cd projects
 git clone https://github.com/mrnamthang/dotfiles.git
 
+rm  ~/.alacritty.toml
 ln -s ~/projects/dotfiles/alacritty/alacritty.toml ~/.alacritty.toml
-ln -s ~/projects/dotfiles/tmux/tmux.conf ~/.tmux.conf
-ln -s ~/projects/dotfiles/zsh/zshrc ~/.zshrc
 
+rm ~/.tmux.conf
+ln -s ~/projects/dotfiles/tmux/tmux.conf ~/.tmux.conf
+
+echo "Configure ZSH..."
+
+rm ~/.zshrc
+ln -s ~/projects/dotfiles/shell/zshrc ~/.zshrc
+
+ln -s /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code /opt/homebrew/bin/code
+
+
+
+# TODO: add more neovim config later on
 #Installing Vim-plug
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
